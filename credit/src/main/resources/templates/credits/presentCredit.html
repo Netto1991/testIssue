@@ -1,20 +1,30 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title th:text=${credit.name}>Credit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
-<div th:each="person : ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}"
-       th:text="${person.getName() + ', ' + person.getAge()}">user</a>
-</div>
-
-<br/>
-<hr/>
-
-<a href="/people/new">Create new person</a>
-
+	<div class="credit">
+	<div>
+			<p th:text="${credit.getName}">Credit Name</p>
+	</div>
+	  <table>
+	      <tr>
+	        <th>Лимит по кредиту</th>
+	        <th>Процентная ставка</th>
+	      </tr>
+	      <tr>
+	        <td th:text="${credit.creditLimit}"></td>
+	        <td th:text="${credit.interestRate}"></td>
+	      </tr>
+	    </table>
+	</div>
+	<div sec:authorize="isAuthenticated()">
+		<form th:method="POST" th:action="@{/{bankName} (bankName=${bank.getName())}" th:object="${credit}">
+		    <br/>
+		    <input type="submit" value="DELETE"/>
+		</form>
+	</div>
 </body>
 </html>

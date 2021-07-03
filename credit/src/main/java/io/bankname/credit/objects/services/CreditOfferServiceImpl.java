@@ -1,7 +1,6 @@
 package io.bankname.credit.objects.services;
 
 import java.util.List;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class CreditOfferServiceImpl implements BaseService<CreditOffer> {
 	}
 
 	@Override
-	public Stream<CreditOffer> presentEntityByName(String name) {
+	public CreditOffer presentEntityByName(String number) {
 		
 		return null;
 	}

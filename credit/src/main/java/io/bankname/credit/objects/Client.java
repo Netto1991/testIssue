@@ -1,11 +1,11 @@
 package io.bankname.credit.objects;
 
 import java.util.Set;
+import java.util.UUID;
 
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -14,13 +14,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table( name = "client")
 public class Client {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long id;
+	@GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 	
 	@NotNull
 	@Size(min = 2, max = 32)
@@ -115,7 +121,7 @@ public class Client {
 		this.passportsNumber = passportsNumber;
 	}
 
-	public long getId() {
+	public UUID getId() {
 		return id;
 	}
 

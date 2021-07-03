@@ -2,22 +2,29 @@ package io.bankname.credit.objects;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "Credir Offer")
 public class CreditOffer {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long id;
+	@GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 	
 
 	private Client client;
@@ -98,7 +105,7 @@ public class CreditOffer {
 		this.paySchedule = paySchedule;
 	}
 
-	public long getId() {
+	public UUID getId() {
 		return id;
 	}
 	

@@ -1,8 +1,6 @@
 package io.bankname.credit.objects.services;
 
 import java.util.List;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -41,8 +39,8 @@ public class ClientServiceImpl implements BaseService<Client>{
 	}
 
 	@Override
-	public Stream<Client> presentEntityByName(String surname) {
-		return clientRepo.findAllBySurname(surname);
+	public Client presentEntityByName(String number) {
+		return clientRepo.findByPassportNumber(number).get();
 	}
 
 }

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "Pay Schedule")
 public class paySchedule {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	private Date payDate;

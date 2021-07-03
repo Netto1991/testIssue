@@ -9,48 +9,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import io.bankname.credit.objects.Bank;
 import io.bankname.credit.objects.Credit;
 import io.bankname.credit.objects.services.BaseService;
+import io.bankname.credit.objects.services.CreditServiceImpl;
 
 @Controller
-@RequestMapping("/{bankName}/credits")
+@RequestMapping("/{bankName}")
 public class CreditController {
 
 		@Autowired
 		@Qualifier("credit")
-		private BaseService<Credit> creditService;
+		private CreditServiceImpl creditService;
 		
-		@GetMapping()
-		public String showCreditsForBank(Model model) {
-			model.addAttribute("credits", creditService.showAllEntity());
-			return "showCredits";
-		}
-		
-		
-		@GetMapping("/{creditId}")
-		public String presentCredit(@PathVariable("{creditId}") long creditId, Model model) {
-			model.addAttribute("credit", creditService.showEntity(creditId));
+		@Autowired
+		@Qualifier("bank")
+		private BaseService<Bank> bankService;
+				
+		@GetMapping("/{creditName}")
+		public String presentCredit(@PathVariable("{bankName}") String bankName,
+									@PathVariable("{creditName}") String creditName, 
+									Model model) {
+			model.addAttribute("credit", creditService.presentEntityByName(creditName, bankService.presentEntityByName(bankName)));
 			return "presentCredit";
 		}
 		
-		@GetMapping("/{creditId}/edit")
-		public String editFormCredits(@PathVariable("{creditId}") long creditId, Model model) {
-			model.addAttribute("credit", creditService.showEntity(creditId));
+		@GetMapping("/{creditName}/edit")
+		public String editFormCredits(@PathVariable("{bankName}") String bankName,
+				@PathVariable("{creditName}") String creditName, Model model) {
+			model.addAttribute("credit", creditService.presentEntityByName(creditName, bankService.presentEntityByName(bankName)));
 			return "formCredit";
 		}
 		
 		@GetMapping("/addcredit")
-		public String addFormCredit(Model model) {
-			model.addAttribute("credit", new Credit());
+		public String addFormCredit(@PathVariable("{bankName}") String bankName, Model model) {
+			Credit credit = new Credit();
+			credit.setBank(bankService.presentEntityByName(bankName));
+			model.addAttribute("credit", credit);
 			return "formCredit";
 		}
 
-		@PostMapping("/{creditId}/edit")
-		public String editCredit(@PathVariable("{creditId}") long creditId, 
+		@PostMapping("/{creditName}/edit")
+		public String editCredit(@PathVariable("{creditName}") String creditName, 
 								Model model, 
 								Credit credit) {
 			creditService.saveEntity(credit);
-			return "redirect:/";
+			model.addAttribute("bankName", credit.getBank().getName());
+			return "redirect:/{bankName}";
 		}
 		
 		@PostMapping("/addcredit")
@@ -58,13 +63,14 @@ public class CreditController {
 								Credit credit) {
 			
 			creditService.saveEntity(credit);
-			return "redirect:/";
+			model.addAttribute("bankName", credit.getBank().getName());
+			return "redirect:/{bankName}";
 		}
 		
-		@PostMapping("/{creditId}")
-		public String removeCredit(@PathVariable("{creditId}") long creditId, 
-								Model model, 
-								Credit credit) {
+		@PostMapping("/{creditName}")
+		public String removeCredit(
+									Model model, 
+									Credit credit) {
 			
 			creditService.deleteEntity(credit);
 			return "redirect:/";

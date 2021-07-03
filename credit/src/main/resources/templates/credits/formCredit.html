@@ -7,20 +7,20 @@
 </head>
 <body>
 
-<form th:method="post" th:action="@{/addgroup}" th:object="${group}">
+<form th:method="post" th:action="@{/{bankName}/addcredit (bankName=${bank.getName())}" th:object="${credit}">
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>
-    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
     
-    <label for="numberOfGroup">Enter numberOfGroup: </label>
-    <input type="number" th:field="*{numberOfGroup}" id="number"/>
-    <p th:if="${#fields.hasErrors('numberOfGroup')}" th:errors="*{numberOfGroup}">Number of group Error</p>
+    <label for="creditLimit">Enter credit limit: </label>
+    <input type="number" th:field="*{creditLimit}" id="creditLimit"/>
     
-    <label for="startLearning">Enter start learning: </label>
-    <input type="date" th:field="*{startLearning}" id="start"/>
+    <label for="interestRate">Enter interestRate: </label>
+    <input type="number" th:field="*{interestRate}" id="interestRate"/>
     
     <br/>
-    <input th:if="${group.groupId}" th:formaction="@{/{groupId}/edit (groupId = ${groupId})}" type="submit" value="Update"/>
+    <input th:if="${credit.Id}" 
+    	th:formaction="@{/{bankName}/{creditName}/edit(bankName=${bank.getName()}, creditName=${credit.getName())}"
+     	type="submit" value="Update"/>
     <input th:unless="${group.groupId}" type="submit" value="Create!"/>
 </form>
 

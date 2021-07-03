@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.bankname.credit.objects.Bank;
 import io.bankname.credit.objects.services.BaseService;
@@ -20,7 +21,7 @@ public class BankControllers {
 	@Qualifier("bank")
 	private BaseService<Bank> bankService;
 	
-	@GetMapping("/banks")
+	@GetMapping()
 	public String showBanks(Model model) {
 		model.addAttribute("banks", bankService.showAllEntity());
 		return "showBanks";
@@ -55,11 +56,13 @@ public class BankControllers {
 	}
 	
 	@PostMapping("/addbank")
-	public String addBank(	Model model, 
+	public String addBank(	RedirectAttributes model, 
 							Bank bank) {
 		
 		bankService.saveEntity(bank);
-		return "redirect:/";
+		model.addAttribute(bank);
+		model.addAttribute("bankName", bank.getName());
+		return "redirect:/{bankName}/addcredit";
 	}
 	
 	@PostMapping("/{bankName}")

@@ -1,10 +1,11 @@
 package io.bankname.credit.objects.services;
 
 import java.util.List;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import io.bankname.credit.objects.Bank;
 import io.bankname.credit.objects.Credit;
 import io.bankname.credit.objects.repositories.CreditRepository;
 
@@ -39,8 +40,14 @@ public class CreditServiceImpl implements BaseService<Credit>{
 		return creditRepo.findAll();
 	}
 
+	public Credit presentEntityByName(String name, Bank bank) {
+		
+		return creditRepo.findByNameAndBank(name, bank).get();
+	
+	}
+
 	@Override
-	public Stream<Credit> presentEntityByName(String name) {
+	public Credit presentEntityByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

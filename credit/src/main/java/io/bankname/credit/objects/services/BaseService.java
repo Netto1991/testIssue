@@ -1,7 +1,6 @@
 package io.bankname.credit.objects.services;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 
 public interface BaseService<T> {
@@ -14,5 +13,5 @@ public interface BaseService<T> {
 
 	List<T> showAllEntity();
 
-	Stream<T> presentEntityByName(String name);
+	T presentEntityByName(String name);
 }

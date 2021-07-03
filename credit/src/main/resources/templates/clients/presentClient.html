@@ -1,20 +1,43 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head> 
+    <title>Client</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
-<div th:each="person : ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}"
-       th:text="${person.getName() + ', ' + person.getAge()}">user</a>
-</div>
-
-<br/>
-<hr/>
-
-<a href="/people/new">Create new person</a>
-
+	<div sec:authorize="isAuthenticated()" class="client">
+	<div>
+			<p th:text="${client.getSurname}">Client</p>
+	</div>
+	  <table>
+	      <tr>
+	        <th>Surname</th>
+	        <th>Name</th>
+	        <th>Father's name</th>
+	        <th>phone number</th>
+	        <th>passport's number</th>
+	        <th>e-mail</th>
+	      </tr>
+	      <tr>
+	        <td th:text="${client.surname}"></td>
+	        <td th:text="${client.name}"></td>
+	        <td th:text="${client.fatherName}"></td>
+	        <td th:text="${client.phoneNumber}"></td>
+	        <td th:text="${client.passportsNumber}"></td>
+	        <td th:text="${client.email}"></td>
+	      </tr>
+	      <tr>
+	    	<div sec:authorize="isAuthenticated()">
+				<a th:href="@{/{clientId}/edit (clientId=${client.id})}">EDIT</a>
+			</div>
+	      </tr>
+	    </table>
+	</div>
+	<div sec:authorize="isAuthenticated()">
+		<form th:method="POST" th:action="@{/}" th:object="${client}">
+		    <br/>
+		    <input type="submit" value="DELETE"/>
+		</form>
+	</div>
 </body>
 </html>
